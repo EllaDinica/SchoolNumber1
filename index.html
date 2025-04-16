@@ -18,20 +18,45 @@
       margin-bottom: 10px;
     }
 
-    input[type="file"] {
+    input[type="file"],
+    input[type="text"] {
       margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
 
   <div class="block">
-    <input type="file" accept="image/*" onchange="previewImage(event, 'img1')">
+    <input type="file" id="fileInput" accept="image/*" onchange="previewImage(event, 'img1')">
     <img id="img1" src="#" alt="Фото буде тут" style="display: none;">
-    <input type="text" placeholder="Підпис про людину">
+    <input type="text" id="captionInput" placeholder="Підпис про людину">
+    <p id="captionDisplay" class="hidden"></p>
   </div>
 
   <script>
+    // Перевіряємо, чи admin в URL
+    const isAdmin = window.location.search.includes('admin');
+
+    const fileInput = document.getElementById('fileInput');
+    const captionInput = document.getElementById('captionInput');
+    const captionDisplay = document.getElementById('captionDisplay');
+
+    if (!isAdmin) {
+      // Ховаємо інпут і показуємо лише текст
+      fileInput.style.display = 'none';
+      captionInput.style.display = 'none';
+      captionDisplay.textContent = "Підпис з'явиться тут";
+      captionDisplay.classList.remove('hidden');
+    } else {
+      captionInput.addEventListener('input', function () {
+        captionDisplay.textContent = captionInput.value;
+      });
+    }
+
     function previewImage(event, imageId) {
       const reader = new FileReader();
       reader.onload = function () {
