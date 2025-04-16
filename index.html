@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Галерея людей</title>
+  <style>
+    .block {
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin: 20px;
+      width: 300px;
+    }
 
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="block">
+    <input type="file" accept="image/*" onchange="previewImage(event, 'img1')">
+    <img id="img1" src="#" alt="Фото буде тут" style="display: none;">
+    <input type="text" placeholder="Підпис про людину">
+  </div>
+
+  <script>
+    function previewImage(event, imageId) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const img = document.getElementById(imageId);
+        img.src = reader.result;
+        img.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+</body>
+</html>
